@@ -23,7 +23,7 @@
 #          type: com.zaxxer.hikari.HikariDataSource
 #        generator:
 #          driverClassName: com.mysql.cj.jdbc.Driver
-#          url: jdbc:mysql://localhost:3306/vickze_ssm?serverTimezone=Asia/Shanghai&useSSL=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+#          url: jdbc:mysql://localhost:3306/vickze_auth?serverTimezone=Asia/Shanghai&useSSL=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
 #          username: root
 #          password: 123456
 #          #连接池的配置信息
