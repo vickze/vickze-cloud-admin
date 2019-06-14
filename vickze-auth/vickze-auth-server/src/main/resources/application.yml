@@ -1,0 +1,90 @@
+#spring:
+#  datasource:
+#    driverClassName: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/vickze_auth?serverTimezone=Asia/Shanghai&useSSL=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+#    username: root
+#    password: 123456
+#    #连接池的配置信息
+#    type: com.zaxxer.hikari.HikariDataSource
+#  redis:
+#    host: ${REDIS_HOST:localhost}
+#    port: ${REDIS_PORT:6379}
+#    database: ${REDIS_DB:0}
+#
+#mybatis-plus:
+#  mapper-locations: classpath:mapper/**/*.xml
+#  configuration:
+#    map-underscore-to-camel-case: true #驼峰下划线转换
+#  global-config:
+#    db-config:
+#      field-strategy: not_empty
+#      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+#      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+#
+#logging:
+#  level:
+#    io.vickze: DEBUG
+#    com.alibaba.nacos.client.naming: ERROR
+#
+#token:
+#  jwt:
+#    enabled: true
+#    secret: aqwe~!@ZXCSQlkjiop
+#    expire: 43200 #12小时
+#  uuid:
+#    enabled: false
+#    expire: 43200 #12小时
+#    updateExpire: true #访问时更新expire
+#
+#
+#auth:
+#  check-permission:
+#    ignore-uris:
+#      - method: GET
+#        uri: /api/auth/v2/api-docs
+#      - method: GET
+#        uri: /api/generator/v2/api-docs
+#    ignore-uris-without-login:
+#      - method: POST
+#        uri: /api/auth/token
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+#  endpoint:
+#    health:
+#      show-details: ALWAYS
+#
+#
+#feign:
+#  hystrix:
+#    enabled: true
+#  httpclient:
+#    enabled: false
+#  okhttp:
+#    enabled: true #使用okhttp，默认时 FeignExceptionErrorDecoder response body为null，原因是feign.Client类 connection.getErrorStream() 为null
+#    read-timeout: 10000 #okhttp client超时时间配置 翻看源码发现，实际调用read-timeout、connect-timeout、followRedirects会被ribbon的覆盖 相关类LoadBalancerFeignClient
+#
+#
+##负载均衡
+#ribbon:
+#  OkToRetryOnAllOperations: false #对所有操作请求都进行重试,默认false
+#  ReadTimeout: 5000   #负载均衡超时时间，默认值5000
+#  ConnectTimeout: 3000 #ribbon请求连接的超时时间，默认值2000
+#  MaxAutoRetries: 0     #对当前实例的重试次数，默认0
+#  MaxAutoRetriesNextServer: 1 #对切换实例的重试次数，默认1
+#
+##熔断
+#hystrix:
+#  command:
+#    default:  #default全局有效，service id指定应用有效
+#      execution:
+#        timeout:
+#          #如果enabled设置为false，则请求超时交给ribbon控制,为true,则超时作为熔断根据
+#          #尝试了下发现需要配置ribbon超时时间才会生效
+#          enabled: false
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 1000 #断路器超时时间，默认1000ms

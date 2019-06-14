@@ -1,0 +1,86 @@
+#spring:
+#  jpa:
+#    show-sql: true
+#  datasource:
+#    dynamic:
+#      primary: master #设置默认的数据源或者数据源组,默认值即为master
+#      hikari:
+#        max-pool-size: 15
+#        is-auto-commit: true
+#        idle-timeout: 30000
+#        pool-name: DatebookHikariCP
+#        max-lifetime: 1800000
+#        connection-timeout: 30000
+#        connection-test-query: SELECT 1
+#        min-idle: 5
+#      datasource:
+#        master:
+#          driverClassName: com.mysql.cj.jdbc.Driver
+#          url: jdbc:mysql://localhost:3306/vickze_generator?serverTimezone=Asia/Shanghai&useSSL=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+#          username: root
+#          password: 123456
+#          #连接池的配置信息
+#          type: com.zaxxer.hikari.HikariDataSource
+#        generator:
+#          driverClassName: com.mysql.cj.jdbc.Driver
+#          url: jdbc:mysql://localhost:3306/vickze_ssm?serverTimezone=Asia/Shanghai&useSSL=true&allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8
+#          username: root
+#          password: 123456
+#          #连接池的配置信息
+#          type: com.zaxxer.hikari.HikariDataSource
+#
+#mybatis-plus:
+#  mapper-locations: classpath:mapper/**/*.xml
+#  configuration:
+#    map-underscore-to-camel-case: true #驼峰下划线转换
+#  global-config:
+#    db-config:
+#      field-strategy: not_empty
+#      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+#      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+#
+#logging:
+#  level:
+#    io.vickze: DEBUG
+#    com.alibaba.nacos.client.naming: ERROR
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+#  endpoint:
+#    health:
+#      show-details: ALWAYS
+#
+#
+#feign:
+#  hystrix:
+#    enabled: true
+#  httpclient:
+#    enabled: false
+#  okhttp:
+#    enabled: true #使用okhttp，默认时 FeignExceptionErrorDecoder response body为null，原因是feign.Client类 connection.getErrorStream() 为null
+#    read-timeout: 10000 #okhttp client超时时间配置 翻看源码发现，实际调用read-timeout、connect-timeout、followRedirects会被ribbon的覆盖 相关类LoadBalancerFeignClient
+#
+#
+##负载均衡
+#ribbon:
+#  OkToRetryOnAllOperations: false #对所有操作请求都进行重试,默认false
+#  ReadTimeout: 5000   #负载均衡超时时间，默认值5000
+#  ConnectTimeout: 3000 #ribbon请求连接的超时时间，默认值2000
+#  MaxAutoRetries: 0     #对当前实例的重试次数，默认0
+#  MaxAutoRetriesNextServer: 1 #对切换实例的重试次数，默认1
+#
+##熔断
+#hystrix:
+#  command:
+#    default:  #default全局有效，service id指定应用有效
+#      execution:
+#        timeout:
+#          #如果enabled设置为false，则请求超时交给ribbon控制,为true,则超时作为熔断根据
+#          #尝试了下发现需要配置ribbon超时时间才会生效
+#          enabled: false
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 1000 #断路器超时时间，默认1000ms
