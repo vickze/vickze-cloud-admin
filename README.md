@@ -1,7 +1,7 @@
 # vickze-cloud-admin
 
 
-后端基于Spring Cloud开发，前端采用ant-design-pro，主要解决微服务架构多系统下的权限控制
+后端基于Spring Cloud开发，前端采用ant-design-pro，主要解决微服务架构多系统下的权限控制，包括权限控制中心、代码生成
 
 
 ### 环境
@@ -20,12 +20,18 @@
 
 ### 功能截图
 
-![](https://github.com/vickze/vickze-cloud-admin/system.png)
-![](https://github.com/vickze/vickze-cloud-admin/menu.png)
-![](https://github.com/vickze/vickze-cloud-admin/menuResource.png)
-![](https://github.com/vickze/vickze-cloud-admin/menuResource_edit.png)
-![](https://github.com/vickze/vickze-cloud-admin/role.png)
-![](https://github.com/vickze/vickze-cloud-admin/user.png)
+权限控制中心
+
+![](https://raw.githubusercontent.com/vickze/vickze-cloud-admin/master/images/menuResource.png)
+
+![](https://raw.githubusercontent.com/vickze/vickze-cloud-admin/master/images/menuResource_edit.png)
+
+代码生成系统
+
+![](https://raw.githubusercontent.com/vickze/vickze-cloud-admin/master/images/code.png)
+
+![](https://raw.githubusercontent.com/vickze/vickze-cloud-admin/master/images/config.png)
+
 
 
 #### 关于领域驱动设计(DDD,Domain-Driven Design)的理解应用
