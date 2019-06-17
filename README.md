@@ -16,7 +16,7 @@
 * 启动mysql、redis、alibaba nacos
 * 服务配置导入到alibaba nacos
 * 启动AuthApplication、GeneratorApplication、GatewayApplication
-* 启动前端工程 [https://github.com/vickze/vickze-auth-ui](https://github.com/vickze/vickze-auth-ui) [https://github.com/vickze/vickze-generator-ui](https://github.com/vickze/vickze-generator-ui) 账号 admin admin
+* 启动前端工程 [https://github.com/vickze/vickze-auth-ui](https://github.com/vickze/vickze-auth-ui) [https://github.com/vickze/vickze-generator-ui](https://github.com/vickze/vickze-generator-ui) 账号密码 admin/admin
 
 ### 功能截图
 
