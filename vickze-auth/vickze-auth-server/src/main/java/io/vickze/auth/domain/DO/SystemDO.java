@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
  * @create 2019-05-15 14:49:10
  */
 @Data
-@TableName("system")
+@TableName("`system`")
 public class SystemDO {
 
     /**

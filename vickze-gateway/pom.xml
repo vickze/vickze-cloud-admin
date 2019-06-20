@@ -76,14 +76,18 @@
         </plugins>
     </build>
 
-    <!-- 该仓库下载swagger snapshot -->
-    <!-- https://springfox.github.io/springfox/docs/snapshot/#dependencies -->
-    <!--<repositories>-->
-    <!--<repository>-->
-    <!--<id>jcenter-snapshots</id>-->
-    <!--<name>jcenter</name>-->
-    <!--<url>http://oss.jfrog.org/artifactory/oss-snapshot-local/</url>-->
-    <!--</repository>-->
-    <!--</repositories>-->
-
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>aliyun nexus</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+        <!--该仓库下载swagger snapshot-->
+        <!--https://springfox.github.io/springfox/docs/snapshot/#dependencies -->
+        <repository>
+            <id>jcenter-snapshots</id>
+            <name>jcenter</name>
+            <url>http://oss.jfrog.org/artifactory/oss-snapshot-local/</url>
+        </repository>
+    </repositories>
 </project>

@@ -5,7 +5,7 @@ import io.vickze.auth.domain.DO.MenuResourceDO;
 import io.vickze.auth.domain.DO.RoleDO;
 import io.vickze.auth.domain.DTO.AssignMenuResourceDTO;
 import io.vickze.auth.domain.DTO.RoleQueryDTO;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Arrays;
 import java.util.List;

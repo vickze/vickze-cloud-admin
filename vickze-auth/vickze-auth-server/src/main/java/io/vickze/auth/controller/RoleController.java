@@ -8,7 +8,7 @@ import io.vickze.auth.domain.DTO.RoleQueryDTO;
 import io.vickze.auth.service.RoleService;
 import io.vickze.common.validation.Insert;
 import io.vickze.common.validation.Update;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;

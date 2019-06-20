@@ -1,0 +1,62 @@
+# docker network create vickze-cloud-admin
+# 启动nacos、mysql、redis在同一个网络vickze-cloud-admin
+
+# ./mvnw install -DskipTests
+# mkdir -p vickze-gateway/target/dependency && (cd vickze-gateway/target/dependency; jar -xf ../*.jar)
+# mkdir -p vickze-auth/vickze-auth-server/target/dependency && (cd vickze-auth/vickze-auth-server/target/dependency; jar -xf ../*.jar)
+# mkdir -p vickze-generator/target/dependency && (cd vickze-generator/target/dependency; jar -xf ../*.jar)
+#
+# (cd ../vickze-auth-ui/; yarn install; yarn build)
+# (cd ../vickze-generator-ui/; yarn install; yarn build)
+#
+# docker-compose build
+# docker-compose up
+version: '2'
+networks:
+  default:
+    external:
+      name: vickze-cloud-admin
+
+services:
+  vickze-gateway:
+    image: io.vickze/vickze-gateway
+    build: ./vickze-gateway/
+    container_name: vickze-gateway
+    ports:
+      - "16000:16000"
+    environment:
+      - NACOS_ADDR=nacos-standalone:8848
+      - JAVA_OPTS=-Xmx128m
+      - COMMAND_ARGS=--REDIS_HOST=redis
+  vickze-auth:
+    image: io.vickze/vickze-auth
+    build: ./vickze-auth/vickze-auth-server/
+    container_name: vickze-auth
+    environment:
+      - NACOS_ADDR=nacos-standalone:8848
+      - JAVA_OPTS=-Xmx128m -DMYSQL_HOST=mysql
+      - COMMAND_ARGS=--REDIS_HOST=redis
+  vickze-generator:
+    image: io.vickze/vickze-generator
+    build: ./vickze-generator/
+    container_name: vickze-generator
+    environment:
+      - NACOS_ADDR=nacos-standalone:8848
+      - JAVA_OPTS=-Xmx128m -DMASTER_MYSQL_HOST=mysql
+      - COMMAND_ARGS=--GENERATOR_MYSQL_HOST=mysql
+  vickze-auth-ui:
+    image: io.vickze/vickze-auth-ui
+    build:
+      context: ../vickze-auth-ui
+      dockerfile: Dockerfile.hub
+    container_name: vickze-auth-ui
+    ports:
+      - "80:80"
+  vickze-generator-ui:
+    image: io.vickze/vickze-generator-ui
+    build:
+      context: ../vickze-generator-ui
+      dockerfile: Dockerfile.hub
+    container_name: vickze-generator-ui
+    ports:
+      - "81:80"

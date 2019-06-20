@@ -19,7 +19,7 @@ import io.vickze.auth.service.UserService;
 import java.util.*;
 
 import io.vickze.common.exception.MessageException;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
             userDTO.setRoles(roleService.selectByUserId(userDTO.getId()));
             return userDTO;
         }).collect(Collectors.toList());
-        return new Pair<>(result, page.getTotal());
+        return Pair.of(result, page.getTotal());
     }
 
     @Override

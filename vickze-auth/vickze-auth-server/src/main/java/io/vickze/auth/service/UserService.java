@@ -4,7 +4,7 @@ import io.vickze.auth.domain.DO.UserDO;
 import io.vickze.auth.domain.DTO.CheckPermissionDTO;
 import io.vickze.auth.domain.DTO.UserDTO;
 import io.vickze.auth.domain.DTO.UserQueryDTO;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 import java.util.Set;

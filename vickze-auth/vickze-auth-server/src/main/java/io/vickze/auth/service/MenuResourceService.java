@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.vickze.auth.domain.DO.MenuResourceDO;
 import io.vickze.auth.domain.DTO.MenuResourceDTO;
 import io.vickze.auth.domain.DTO.MenuResourceQueryDTO;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 

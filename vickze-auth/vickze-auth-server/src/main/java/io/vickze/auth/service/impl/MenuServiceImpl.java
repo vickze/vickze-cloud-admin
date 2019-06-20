@@ -18,7 +18,7 @@ import io.vickze.auth.domain.DTO.MenuQueryDTO;
 import io.vickze.common.enums.DBOrder;
 import io.vickze.auth.service.MenuService;
 import java.util.ArrayList;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,7 +87,7 @@ public class MenuServiceImpl implements MenuService {
             wrapper = wrapper.orderByDesc("id");
         }
         menuMapper.selectPage(page, wrapper);
-        return new Pair<>(page.getRecords(), page.getTotal());
+        return Pair.of(page.getRecords(), page.getTotal());
     }
 
     @Override

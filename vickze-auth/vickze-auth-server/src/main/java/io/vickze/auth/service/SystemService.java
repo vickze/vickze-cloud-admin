@@ -2,7 +2,7 @@ package io.vickze.auth.service;
 
 import io.vickze.auth.domain.DO.SystemDO;
 import io.vickze.auth.domain.DTO.SystemQueryDTO;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 

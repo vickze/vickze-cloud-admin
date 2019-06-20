@@ -9,7 +9,7 @@ import io.vickze.generator.mapper.TemplateMapper;
 import io.vickze.common.domain.RPage;
 import io.vickze.generator.domain.DTO.TemplateQueryDTO;
 import io.vickze.common.enums.DBOrder;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class TemplateServiceImpl implements TemplateService {
             wrapper = wrapper.orderByDesc("id");
         }
         templateMapper.selectPage(page, wrapper);
-        return new Pair<>(page.getRecords(), page.getTotal());
+        return Pair.of(page.getRecords(), page.getTotal());
     }
 
     @Override

@@ -12,7 +12,7 @@ import io.vickze.auth.domain.DTO.RoleQueryDTO;
 import io.vickze.common.enums.DBOrder;
 import io.vickze.auth.service.RoleService;
 import io.vickze.auth.exception.ForbiddenException;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,7 +62,7 @@ public class RoleServiceImpl implements RoleService {
             wrapper = wrapper.orderByDesc("id");
         }
         roleMapper.selectPage(page, wrapper);
-        return new Pair<>(page.getRecords(), page.getTotal());
+        return Pair.of(page.getRecords(), page.getTotal());
     }
 
     @Override

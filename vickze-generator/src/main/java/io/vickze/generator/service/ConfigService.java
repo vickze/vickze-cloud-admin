@@ -2,7 +2,7 @@ package io.vickze.generator.service;
 
 import io.vickze.generator.domain.DO.ConfigDO;
 import io.vickze.generator.domain.DTO.ConfigQueryDTO;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 

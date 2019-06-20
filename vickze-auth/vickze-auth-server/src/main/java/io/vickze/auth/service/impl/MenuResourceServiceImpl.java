@@ -14,7 +14,7 @@ import io.vickze.auth.domain.DTO.MenuResourceQueryDTO;
 import io.vickze.common.enums.DBOrder;
 import io.vickze.auth.service.MenuResourceService;
 import io.vickze.auth.exception.ForbiddenException;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +68,7 @@ public class MenuResourceServiceImpl implements MenuResourceService {
             menuResourceDTO.setInterfaces(menuResourceInterfaceMapper.selectList(queryWrapper));
             return menuResourceDTO;
         }).collect(Collectors.toList());
-        return new Pair<>(result, page.getTotal());
+        return Pair.of(result, page.getTotal());
     }
 
     @Override

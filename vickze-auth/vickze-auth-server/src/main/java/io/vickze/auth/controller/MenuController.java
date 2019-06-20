@@ -8,7 +8,8 @@ import io.vickze.auth.service.MenuService;
 import io.vickze.auth.service.SystemService;
 import io.vickze.common.validation.Insert;
 import io.vickze.common.validation.Update;
-import javafx.util.Pair;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/menu")
+@Slf4j
 public class MenuController {
 
     @Autowired
@@ -33,6 +35,7 @@ public class MenuController {
 
     @GetMapping("/tree")
     public List<MenuTreeDTO> tree(Long systemId) {
+        log.info(Runtime.getRuntime().maxMemory() / 1024 / 1024 + "m");
         return menuService.tree(systemId);
     }
 

@@ -11,7 +11,7 @@ import io.vickze.generator.domain.DTO.GeneratorQueryDTO;
 import io.vickze.generator.domain.DTO.SaveDataSourceDTO;
 import io.vickze.generator.domain.DTO.DataSourceDTO;
 import io.vickze.generator.service.GeneratorService;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;

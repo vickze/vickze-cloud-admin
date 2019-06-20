@@ -124,7 +124,7 @@ public class ImportExcel {
     private String getReplace(Excel excel, Cell cell) {
         String replace = excel.replace();
         if (StringUtils.isBlank(replace)) {
-            return cell.getStringCellValue();
+            return cell.toString();
         }
         String[] strings = replace.split(" ");
         Map<String, String> map = new HashMap<>();

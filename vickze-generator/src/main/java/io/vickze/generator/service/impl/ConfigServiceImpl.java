@@ -15,7 +15,7 @@ import io.vickze.generator.domain.DO.ConfigDO;
 import io.vickze.generator.domain.DTO.ConfigQueryDTO;
 import io.vickze.generator.service.ConfigService;
 import java.util.ArrayList;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,7 @@ public class ConfigServiceImpl implements ConfigService {
             return criteriaBuilder.and(list.toArray(predicates));
         }, pageable);
 
-        return new Pair<>(page.getContent(), page.getTotalElements());
+        return Pair.of(page.getContent(), page.getTotalElements());
     }
 
     @Override

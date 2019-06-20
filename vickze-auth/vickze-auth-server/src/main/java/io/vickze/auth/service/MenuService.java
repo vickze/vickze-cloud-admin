@@ -3,7 +3,7 @@ package io.vickze.auth.service;
 import io.vickze.auth.domain.DO.MenuDO;
 import io.vickze.auth.domain.DTO.MenuQueryDTO;
 import io.vickze.auth.domain.DTO.MenuTreeDTO;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 

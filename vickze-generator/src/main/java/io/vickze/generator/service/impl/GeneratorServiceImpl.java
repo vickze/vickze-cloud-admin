@@ -19,7 +19,7 @@ import io.vickze.common.enums.DBOrder;
 import io.vickze.generator.mapper.TableMapper;
 import io.vickze.generator.util.GeneratorUtil;
 import io.vickze.common.domain.RPage;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.IOUtils;
@@ -69,7 +69,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         wrapper.apply("table_schema = (select database())");
 
         tableMapper.selectPage(page, wrapper);
-        return new Pair<>(page.getRecords(), page.getTotal());
+        return Pair.of(page.getRecords(), page.getTotal());
     }
 
     @Override

@@ -7,7 +7,7 @@ import io.vickze.generator.domain.DTO.ConfigQueryDTO;
 import io.vickze.generator.service.ConfigService;
 import io.vickze.common.validation.Insert;
 import io.vickze.common.validation.Update;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
