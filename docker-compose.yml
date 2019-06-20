@@ -31,7 +31,6 @@ services:
   vickze-auth:
     image: io.vickze/vickze-auth
     build: ./vickze-auth/vickze-auth-server/
-    container_name: vickze-auth
     environment:
       - NACOS_ADDR=nacos-standalone:8848
       - JAVA_OPTS=-Xmx128m -DMYSQL_HOST=mysql
@@ -39,7 +38,6 @@ services:
   vickze-generator:
     image: io.vickze/vickze-generator
     build: ./vickze-generator/
-    container_name: vickze-generator
     environment:
       - NACOS_ADDR=nacos-standalone:8848
       - JAVA_OPTS=-Xmx128m -DMASTER_MYSQL_HOST=mysql
