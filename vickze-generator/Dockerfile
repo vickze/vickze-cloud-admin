@@ -1,4 +1,5 @@
-# ./mvnw install -DskipTests
+# (cd ../vickze-common; ../mvnw install -DskipTests)
+# ../mvnw install -DskipTests
 # mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 # docker build -t io.vickze/vickze-generator .
 # docker run -it --rm -e NACOS_ADDR=nacos-standalone:8848 -e JAVA_OPTS="-Xmx128m -DMASTER_MYSQL_HOST=mysql" -e COMMAND_ARGS="--GENERATOR_MYSQL_HOST=mysql" --net vickze-cloud-admin io.vickze/vickze-generator

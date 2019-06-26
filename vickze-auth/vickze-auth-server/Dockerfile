@@ -1,4 +1,7 @@
-# ./mvnw install -DskipTests
+# (cd ../../vickze-common; ../mvnw install -DskipTests)
+# (cd ../vickze-auth-common; ../../mvnw install -DskipTests)
+# (cd ../vickze-auth-client; ../../mvnw install -DskipTests)
+# ../../mvnw install -DskipTests
 # mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 # docker build -t io.vickze/vickze-auth .
 # docker run -it --rm -e NACOS_ADDR=nacos-standalone:8848 -e JAVA_OPTS="-Xmx128m -DMYSQL_HOST=mysql" -e COMMAND_ARGS="--REDIS_HOST=redis" --net vickze-cloud-admin io.vickze/vickze-auth
