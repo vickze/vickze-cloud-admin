@@ -25,7 +25,6 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/menu")
-@Slf4j
 public class MenuController {
 
     @Autowired
@@ -35,7 +34,6 @@ public class MenuController {
 
     @GetMapping("/tree")
     public List<MenuTreeDTO> tree(Long systemId) {
-        log.info(Runtime.getRuntime().maxMemory() / 1024 / 1024 + "m");
         return menuService.tree(systemId);
     }
 
