@@ -1,6 +1,6 @@
 package io.vickze.excel;
 
-import io.vickze.common.csv.ExportCsv;
+import io.vickze.common.excel.ExportCsv;
 import io.vickze.common.excel.ExportExcel;
 import org.junit.Test;
 
@@ -28,7 +28,7 @@ public class ExportTest {
             client.setId("1" + i);
             client.setRemark("测试" + i);
             list.add(client);
-            if(list.size() == 100000){
+            if (list.size() == 100000) {
                 exportExcel = exportExcel.append(MsgClient.class, list, "大数据导出", false);
                 list.clear();
             }
@@ -46,17 +46,21 @@ public class ExportTest {
 
     @Test
     public void bigCsvExport() throws Exception {
-        List<String[]> list = new LinkedList<>();
+        List<MsgClient> list = new LinkedList<>();
         Date start = new Date();
 
         ExportCsv exportExcel = new ExportCsv(true);
-        String[] header = {"clientName", "phone"};
-        for (int i = 0; i < 100000; i++) {  //一百万数据量
-
-            String[] content = {"小明" + i, "18797" + i};
-            list.add(content);
-            if(list.size() == 100000){
-                exportExcel = exportExcel.append(header, list, "大数据", true);
+        for (int i = 0; i < 1000000; i++) {  //一百万数据量
+            MsgClient client = new MsgClient();
+            client.setBirthday(new Date());
+            client.setClientName("小明" + i);
+            client.setClientPhone("18797" + i);
+            client.setCreateBy("JueYue");
+            client.setId("1" + i);
+            client.setRemark("测试" + i);
+            list.add(client);
+            if (list.size() == 100000) {
+                exportExcel = exportExcel.append(MsgClient.class, list, "大数据", true);
                 list.clear();
             }
         }
@@ -65,7 +69,7 @@ public class ExportTest {
         if (!savefile.exists()) {
             savefile.mkdirs();
         }
-        FileOutputStream fos = new FileOutputStream("C:\\Users\\25125\\Java\\zookeeper-3.4.11\\bin\\ExcelExportBiga.bigDataExport" +exportExcel.getExportSuffix());
+        FileOutputStream fos = new FileOutputStream("C:\\Users\\25125\\Java\\zookeeper-3.4.11\\bin\\ExcelExportBiga.bigDataExport" + exportExcel.getExportSuffix());
         exportExcel.write(fos);
         fos.close();
         System.out.println(new Date().getTime() - start.getTime());

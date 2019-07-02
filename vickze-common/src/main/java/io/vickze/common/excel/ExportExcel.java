@@ -73,7 +73,7 @@ public class ExportExcel {
                     if (o == null) {
                         cell.setCellValue(StringUtils.EMPTY);
                     } else if (o.getClass().getName().indexOf("java.lang.") == 0) {
-                        setReplace(excel, cell, o);
+                        cell.setCellValue(getReplace(excel, o));
                     } else if (o instanceof LocalDateTime) {
                         cell.setCellValue(((LocalDateTime) o).format(DateTimeFormatter.ofPattern(excel.format())));
                     } else {
@@ -140,11 +140,10 @@ public class ExportExcel {
         return writeFieldMethod;
     }
 
-    private static void setReplace(Excel excel, Cell cell, Object o) {
+    private static String getReplace(Excel excel, Object o) {
         String replace = excel.replace();
         if (StringUtils.isBlank(replace)) {
-            cell.setCellValue(o.toString());
-            return;
+            return o.toString();
         }
 
         String[] strings = replace.split(" ");
@@ -154,7 +153,7 @@ public class ExportExcel {
             map.put(strings1[0], strings1[1]);
         }
 
-        cell.setCellValue(map.get(String.valueOf(o)));
+        return map.get(String.valueOf(o));
     }
 
     public void write(OutputStream outputStream) throws IOException {

@@ -1,9 +1,8 @@
 package io.vickze.excel;
 
 
-import io.vickze.common.csv.ImportCsv;
+import io.vickze.common.excel.ImportCsv;
 import io.vickze.common.excel.ImportExcel;
-import org.apache.commons.csv.CSVRecord;
 import org.junit.Test;
 
 import java.io.FileInputStream;
@@ -22,7 +21,14 @@ public class ImportTest {
     @Test
     public void csvImportTest() throws FileNotFoundException {
         FileInputStream fileInputStream = new FileInputStream("C:\\Users\\25125\\Java\\zookeeper-3.4.11\\bin\\ExcelExportBiga.bigDataExport.csv");
-        List<CSVRecord> list = new ImportCsv().importCsv(fileInputStream);
+        List<MsgClient> list = new ImportCsv().importCsv(fileInputStream, MsgClient.class);
+        System.out.println(list.size());
+    }
+
+    @Test
+    public void csvZipImportTest() throws FileNotFoundException {
+        FileInputStream fileInputStream = new FileInputStream("C:\\Users\\25125\\Java\\zookeeper-3.4.11\\bin\\ExcelExportBiga.bigDataExport.zip");
+        List<MsgClient> list = new ImportCsv().importCsvZip(fileInputStream, MsgClient.class);
         System.out.println(list.size());
     }
 }

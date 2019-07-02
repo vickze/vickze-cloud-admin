@@ -44,20 +44,12 @@ public class ImportExcel {
                         Method method = fieldMethodEntry.getValue();
                         Excel excel = field.getAnnotation(Excel.class);
                         Cell rowCell = row.getCell(i);
-                        if (excel.importIgnore() || rowCell == null) {
-                            i++;
-                            continue;
-                        }
-                        if (StringUtils.isBlank(rowCell.toString())) {
-                            if (!excel.importNullable()) {
-                                throw new RuntimeException(excel.name() + "不能为空");
-                            }
-                        }
+                        String value = rowCell.toString();
                         if (field.getType() == String.class) {
-                            method.invoke(object, getReplace(excel, rowCell));
+                            method.invoke(object, getReplace(excel, value));
                         } else if (field.getType().getName().indexOf("java.lang.") == 0) {
                             // java.lang下面类型通用转换函数
-                            String replace = getReplace(excel, rowCell);
+                            String replace = getReplace(excel, value);
                             if (StringUtils.isNotBlank(replace) && StringUtils.isNumeric(replace)) {
                                 Class<?> fieldClass = Class.forName(field.getType().getName());
                                 Method parseMethod = fieldClass.getMethod("parse" + fixParse(field.getType().getSimpleName()), String.class);
@@ -77,9 +69,9 @@ public class ImportExcel {
                                 actualTypeArguments[j] = (Class<?>) types[j];
                             }
 
-                            method.invoke(object, JsonUtil.fromJson(rowCell.getStringCellValue(), field.getType(), actualTypeArguments));
+                            method.invoke(object, JsonUtil.fromJson(value, field.getType(), actualTypeArguments));
                         } else {
-                            method.invoke(object, JsonUtil.fromJson(rowCell.toString(), field.getType()));
+                            method.invoke(object, JsonUtil.fromJson(value, field.getType()));
                         }
 
                         i++;
@@ -110,7 +102,7 @@ public class ImportExcel {
                 try {
                     pd = new PropertyDescriptor(field.getName(), clazz);
                 } catch (IntrospectionException e) {
-                    e.printStackTrace();
+                    log.error(e.getMessage(), e);
                     throw new RuntimeException("导出Excel异常", e);
                 }
                 writeFieldMethod.put(field, pd.getWriteMethod());
@@ -121,10 +113,10 @@ public class ImportExcel {
         return writeFieldMethod;
     }
 
-    private String getReplace(Excel excel, Cell cell) {
+    private String getReplace(Excel excel, String value) {
         String replace = excel.replace();
         if (StringUtils.isBlank(replace)) {
-            return cell.toString();
+            return value;
         }
         String[] strings = replace.split(" ");
         Map<String, String> map = new HashMap<>();
@@ -132,7 +124,7 @@ public class ImportExcel {
             String[] strings1 = str.split("-");
             map.put(strings1[1], strings1[0]);
         }
-        return map.get(cell.getStringCellValue());
+        return map.get(value);
     }
 
     private String fixParse(String type) {
