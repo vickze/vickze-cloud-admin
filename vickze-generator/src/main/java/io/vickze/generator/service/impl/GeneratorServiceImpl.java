@@ -3,6 +3,12 @@ package io.vickze.generator.service.impl;
 import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import io.vickze.auth.constant.GlobalConstant;
+import io.vickze.generator.constant.ConfigConstant;
+import io.vickze.generator.constant.TemplateConstant;
 import io.vickze.generator.domain.DO.ConfigDO;
 import io.vickze.generator.domain.DO.TemplateDO;
 import io.vickze.generator.domain.DTO.ColumnDTO;
@@ -28,6 +34,7 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.Yaml;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -64,7 +71,7 @@ public class GeneratorServiceImpl implements GeneratorService {
         }
         if (query.getField() != null) {
             wrapper = wrapper.orderBy(true, DBOrder.ASC.name().equalsIgnoreCase(query.getOrder()),
-                   com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(query.getField()));
+                    com.baomidou.mybatisplus.core.toolkit.StringUtils.camelToUnderline(query.getField()));
         }
         wrapper.apply("table_schema = (select database())");
 
@@ -73,18 +80,36 @@ public class GeneratorServiceImpl implements GeneratorService {
     }
 
     @Override
-    public byte[] generatorCode(GeneratorCodeDTO generatorCode) throws ConfigurationException {
+    public byte[] generatorCode(GeneratorCodeDTO generatorCode) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
         ConfigDO configDO = configService.get(generatorCode.getConfigId());
         Collection<TemplateDO> templateDOS = templateService.listByIds(generatorCode.getTemplateIds());
 
-        PropertiesConfiguration config = new PropertiesConfiguration();
+        Map<String, Object> config = new HashMap<>();
+
         if (configDO != null) {
-            config.load(new StringReader(configDO.getContent()));
+            if (configDO.getType() == ConfigConstant.YAML) {
+                Yaml yaml = new Yaml();
+                config = yaml.load(configDO.getContent());
+            }
+            if (configDO.getType() == ConfigConstant.PROPERTIES) {
+                PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration();
+                try {
+                    propertiesConfiguration.load(new StringReader(configDO.getContent()));
+                } catch (ConfigurationException e) {
+                    throw new RuntimeException(e);
+                }
+                Iterator<String> iterator = propertiesConfiguration.getKeys();
+                while (iterator.hasNext()) {
+                    String key = iterator.next();
+                    config.put(key, propertiesConfiguration.getString(key));
+                }
+            }
         }
 
         for (String tableName : generatorCode.getTableNames()) {
+
             QueryWrapper<TableDO> tableDOQueryWrapper = new QueryWrapper<>();
             tableDOQueryWrapper.eq("table_name", tableName);
             tableDOQueryWrapper.apply("table_schema = (select database())");
@@ -104,7 +129,7 @@ public class GeneratorServiceImpl implements GeneratorService {
             tableDTO.setName(tableDO.getTableName());
             tableDTO.setComments(tableDO.getTableComment());
             // 表名转换成Java类名
-            String className = GeneratorUtil.tableToJava(tableDTO.getName(), config.getString("tablePrefix"));
+            String className = GeneratorUtil.tableToJava(tableDTO.getName(), String.valueOf(config.get("tablePrefix")));
             tableDTO.setClassNameUpperCamel(className);
             tableDTO.setClassNameLowerCamel(StringUtils.uncapitalize(className));
 
@@ -124,7 +149,10 @@ public class GeneratorServiceImpl implements GeneratorService {
                 column.setAttrNameLowerCamel(StringUtils.uncapitalize(attrName));
 
                 // 列的数据类型，转换成Java类型
-                String attrType = config.getString(column.getDataType(), "unknowType");
+                String attrType = String.valueOf(config.get(column.getDataType()));
+                if (attrType == null || "null".equals(attrType)) {
+                    attrType = "unknowType";
+                }
                 column.setAttrType(attrType);
 
                 // 是否主键
@@ -142,39 +170,51 @@ public class GeneratorServiceImpl implements GeneratorService {
             }
 
 
+            Configuration configuration = new Configuration(Configuration.VERSION_2_3_28);
+
             Velocity.init();
 
             // 封装模板数据
-            VelocityContext velocityContext = new VelocityContext();
-            velocityContext.put("tableName", tableDTO.getName());
-            velocityContext.put("tableComment", tableDTO.getComments());
-            velocityContext.put("pk", tableDTO.getPk());
-            velocityContext.put("classNameUpperCamel", tableDTO.getClassNameUpperCamel());
-            velocityContext.put("classNameLowerCamel", tableDTO.getClassNameLowerCamel());
-            velocityContext.put("pathName", StringUtils.replace(tableDTO.getName(), "_", "/"));
-            velocityContext.put("columns", tableDTO.getColumns());
-            velocityContext.put("now", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            config.put("tableName", tableDTO.getName());
+            config.put("tableComment", tableDTO.getComments());
+            config.put("pk", tableDTO.getPk());
+            config.put("classNameUpperCamel", tableDTO.getClassNameUpperCamel());
+            config.put("classNameLowerCamel", tableDTO.getClassNameLowerCamel());
+            config.put("pathName", StringUtils.replace(tableDTO.getName(), "_", "/"));
+            config.put("columns", tableDTO.getColumns());
+            config.put("now", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
-            Iterator<String> iterator = config.getKeys();
+            VelocityContext velocityContext = new VelocityContext();
+            Iterator<String> iterator = config.keySet().iterator();
             while (iterator.hasNext()) {
                 String key = iterator.next();
-                velocityContext.put(key, config.getString(key));
+                velocityContext.put(key, config.get(key));
             }
 
             for (TemplateDO template : templateDOS) {
-                // 输出流
-                StringWriter writer = new StringWriter();
-
-                // 转换输出
-                Velocity.evaluate(velocityContext, writer, "", template.getContent()); // 关键方法
-
                 try {
-                    // 添加到zip
-                    zip.putNextEntry(new ZipEntry(GeneratorUtil.getFileName(velocityContext, template.getFileName(), tableDTO.getClassNameUpperCamel(), tableDTO.getClassNameLowerCamel(), config.getString("package"))));
-                    IOUtils.write(writer.toString(), zip, "UTF-8");
-                    IOUtils.closeQuietly(writer);
-                    zip.closeEntry();
-                } catch (IOException e) {
+                    // 输出流
+                    StringWriter writer = new StringWriter();
+
+                    if (TemplateConstant.VELOCITY.equals(template.getType())) {
+                        // 转换输出
+                        Velocity.evaluate(velocityContext, writer, "", template.getContent()); // 关键方法
+                        // 添加到zip
+                        zip.putNextEntry(new ZipEntry(GeneratorUtil.getFileName(velocityContext, template.getFileName(), tableDTO.getClassNameUpperCamel(), tableDTO.getClassNameLowerCamel(), String.valueOf(config.get("package")))));
+                        IOUtils.write(writer.toString(), zip, "UTF-8");
+                        IOUtils.closeQuietly(writer);
+                        zip.closeEntry();
+                    }
+
+                    if (TemplateConstant.FREEMARKER.equals(template.getType())) {
+                        new Template("", new StringReader(template.getContent()), configuration).process(config, writer);// 关键方法
+                        // 添加到zip
+                        zip.putNextEntry(new ZipEntry(GeneratorUtil.getFileName(configuration, template.getFileName(), config)));
+                        IOUtils.write(writer.toString(), zip, "UTF-8");
+                        IOUtils.closeQuietly(writer);
+                        zip.closeEntry();
+                    }
+                } catch (Exception e) {
                     throw new RuntimeException("渲染模板失败，表名：" + tableDTO.getName(), e);
                 }
             }

@@ -47,7 +47,7 @@ public class ConfigDO {
     @NotBlank(groups = {Insert.class, Update.class})
     private String content;
     /**
-     * 类型 0-yml 1-properties
+     * 类型 0-properties 1-yaml
      */
     @NotNull(groups = {Insert.class, Update.class})
     private Integer type;

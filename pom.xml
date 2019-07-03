@@ -24,6 +24,8 @@
         <spring-boot-admin.version>2.0.1</spring-boot-admin.version>
         <swagger.version>2.9.2</swagger.version>
         <velocity.version>1.7</velocity.version>
+        <freemarker.version>2.3.28
+        </freemarker.version>
         <mybatis-plus.verion>3.0.7.1</mybatis-plus.verion>
         <mybatis-plus.dynamic-datasource.version>2.5.0</mybatis-plus.dynamic-datasource.version>
         <mysql.version>8.0.15</mysql.version>
@@ -116,6 +118,11 @@
                 <artifactId>velocity</artifactId>
                 <groupId>org.apache.velocity</groupId>
                 <version>${velocity.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.baomidou</groupId>

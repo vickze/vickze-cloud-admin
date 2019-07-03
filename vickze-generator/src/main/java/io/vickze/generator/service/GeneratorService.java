@@ -6,6 +6,7 @@ import io.vickze.generator.domain.DTO.GeneratorQueryDTO;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.configuration.ConfigurationException;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface GeneratorService {
@@ -16,5 +17,5 @@ public interface GeneratorService {
      * 生成代码
      * @param generatorCode
      */
-    byte[] generatorCode(GeneratorCodeDTO generatorCode) throws ConfigurationException;
+    byte[] generatorCode(GeneratorCodeDTO generatorCode);
 }

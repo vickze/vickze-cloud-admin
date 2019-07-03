@@ -69,7 +69,7 @@ public class GeneratorController {
      * 生成代码
      */
     @PostMapping("/code")
-    public void code(@RequestBody GeneratorCodeDTO generatorCode, HttpServletResponse response) throws IOException, ConfigurationException {
+    public void code(@RequestBody GeneratorCodeDTO generatorCode, HttpServletResponse response) throws IOException {
         byte[] data = generatorService.generatorCode(generatorCode);
 
         response.reset();
