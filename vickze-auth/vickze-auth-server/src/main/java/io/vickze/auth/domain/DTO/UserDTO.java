@@ -8,9 +8,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import io.vickze.auth.domain.DO.RoleDO;
 import io.vickze.common.validation.Insert;
+import io.vickze.common.validation.Phone;
 import io.vickze.common.validation.Update;
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -43,10 +45,12 @@ public class UserDTO {
     /**
      * 邮箱
      */
+    @Email(groups = {Insert.class, Update.class})
     private String email;
     /**
      * 手机号
      */
+    @Phone(groups = {Insert.class, Update.class})
     private String mobile;
     /**
      * 状态  0：禁用   1：正常

@@ -47,6 +47,21 @@
 #                key-resolver: '#{@ipAddressKeyResolver}'
 #                redis-rate-limiter.replenishRate: 5 #每秒执行多少请求，而不需要删除任何请求。这是令牌桶被填充的速率。
 #                redis-rate-limiter.burstCapacity: 3 #每秒钟最大请求数
+#        - id: vickze-sso
+#          uri: lb://vickze-sso
+#          order: 0
+#          predicates:
+#            - Path=/api/sso/**
+#          filters:
+#            #- AddRequestHeader=X-Forwarded-Prefix, /api/generator  #swagger XForwardPrefixPathAdjuster.java
+#            - AddResponseHeader=Access-Control-Allow-Origin, *
+#            - AddResponseHeader=X-Response-Foo, Bar
+#            - StripPrefix=2
+#            - name: RequestRateLimiter
+#              args:
+#                key-resolver: '#{@ipAddressKeyResolver}'
+#                redis-rate-limiter.replenishRate: 5 #每秒执行多少请求，而不需要删除任何请求。这是令牌桶被填充的速率。
+#                redis-rate-limiter.burstCapacity: 3 #每秒钟最大请求数
 #
 #  redis:
 #    host: ${REDIS_HOST:localhost}

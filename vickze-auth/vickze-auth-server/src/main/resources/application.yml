@@ -22,17 +22,19 @@
 #      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 #
 #logging:
+#  file: ./log/vickze-auth.log
+#  #file.max-size: 10MB
 #  level:
 #    io.vickze: DEBUG
 #    com.alibaba.nacos.client.naming: ERROR
 #
 #token:
 #  jwt:
-#    enabled: true
+#    enabled: false
 #    secret: aqwe~!@ZXCSQlkjiop
 #    expire: 43200 #12小时
 #  uuid:
-#    enabled: false
+#    enabled: true
 #    expire: 43200 #12小时
 #    updateExpire: true #访问时更新expire
 #
@@ -44,9 +46,14 @@
 #        uri: /api/auth/v2/api-docs
 #      - method: GET
 #        uri: /api/generator/v2/api-docs
+#      - method: GET
+#        uri: /api/sso/v2/api-docs
+#    #不需要登录但仍然需要System-Key
 #    ignore-uris-without-login:
 #      - method: POST
 #        uri: /api/auth/token
+#      - method: GET
+#        uri: /api/sso/validate
 #
 #management:
 #  endpoints:

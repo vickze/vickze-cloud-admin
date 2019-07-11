@@ -1,0 +1,6 @@
+#sso:
+#  system:
+#    vickze-auth:
+#      - http://localhost:8000/
+#    vickze-generator:
+#      - http://localhost:8002/

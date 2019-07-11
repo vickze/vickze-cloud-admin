@@ -13,6 +13,7 @@
         <module>vickze-common</module>
         <module>vickze-auth</module>
         <module>vickze-gateway</module>
+        <module>vickze-sso</module>
     </modules>
 
     <properties>

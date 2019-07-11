@@ -149,16 +149,14 @@ public class MenuResourceServiceImpl implements MenuResourceService {
 
         List<MenuResourceInterfaceDO> menuResourceInterfaceDOS = menuResourceInterfaceMapper.selectList(wrapper);
 
-        List<MenuResourceInterfaceDO> filterAllList = new ArrayList<>();
         for (MenuResourceInterfaceDO menuResourceInterfaceDO : menuResourceInterfaceDOS) {
             String interfaceUri = menuResourceInterfaceDO.getInterfaceUri();
-            if (interfaceUri.indexOf("{*}") > 0) {
-                filterAllList.add(menuResourceInterfaceDO);
-                continue;
-            }
             if (interfaceUri.indexOf("{") > 0) {
                 //替换{...} 英文数字
                 interfaceUri = interfaceUri.replaceAll("\\{[a-zA-Z\\d]+\\}", "[a-zA-Z\\\\d]+");
+            }
+            if (interfaceUri.endsWith("/")) {
+                interfaceUri = interfaceUri.substring(0, interfaceUri.lastIndexOf("/"));
             }
             //String regEx = "^" + interfaceUri + "/?$";
             String regEx = "^" + interfaceUri + "$";
