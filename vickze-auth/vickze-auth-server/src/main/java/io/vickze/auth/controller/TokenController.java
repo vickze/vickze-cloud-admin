@@ -17,12 +17,6 @@ public class TokenController implements TokenClient {
     @Autowired
     private TokenService tokenService;
 
-    @PostMapping
-    public TokenDTO create(@RequestHeader(GlobalConstant.SYSTEM_HEADER) String systemKey, @RequestBody CreateTokenDTO createTokenDTO) {
-        createTokenDTO.setSystemKey(systemKey);
-        return tokenService.create(createTokenDTO);
-    }
-
     @Override
     public AuthUserDTO validate(String token) {
         return tokenService.validate(token);

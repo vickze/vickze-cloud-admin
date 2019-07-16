@@ -62,7 +62,7 @@ public class CheckPermissionServiceImpl implements CheckPermissionService {
             throw new UnauthorizedException();
         }
 
-        Set<String> userPermissions = userService.getMenuPermissions(checkPermissionDTO.getSystemKey(), authUserDTO.getUserId());
+        Set<String> userPermissions = userService.getMenuPermissions(systemDO.getId(), authUserDTO.getUserId());
         //是否允许无菜单资源权限登录
         if (Boolean.FALSE.equals(systemDO.getNotResourceLogin()) && CollectionUtils.isEmpty(userPermissions)) {
             throw new UnauthorizedException();

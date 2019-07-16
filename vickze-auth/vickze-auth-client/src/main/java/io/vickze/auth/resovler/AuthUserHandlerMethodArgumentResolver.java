@@ -49,7 +49,7 @@ public class AuthUserHandlerMethodArgumentResolver implements HandlerMethodArgum
             token = nativeWebRequest.getParameter(TokenConstant.TOKEN_HEADER);
         }
         if (StringUtils.isBlank(token)) {
-            throw new UnauthorizedException();
+            throw new UnauthorizedException(false);
         }
 
         return tokenClient.validate(token);

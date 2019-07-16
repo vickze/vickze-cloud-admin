@@ -6,7 +6,7 @@ import io.vickze.auth.domain.DTO.TokenDTO;
 
 public interface TokenService {
 
-    TokenDTO create(CreateTokenDTO createTokenDTO);
+    TokenDTO create(AuthUserDTO authUserDTO);
 
     AuthUserDTO validate(String token);
 

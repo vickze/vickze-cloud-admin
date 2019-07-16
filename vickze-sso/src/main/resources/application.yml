@@ -4,3 +4,12 @@
 #      - http://localhost:8000/
 #    vickze-generator:
 #      - http://localhost:8002/
+#
+#feign:
+#  hystrix:
+#    enabled: true
+#  httpclient:
+#    enabled: false
+#  okhttp:
+#    enabled: true #使用okhttp，默认时 FeignExceptionErrorDecoder response body为null，原因是feign.Client类 connection.getErrorStream() 为null
+#    read-timeout: 10000 #okhttp client超时时间配置 翻看源码发现，实际调用read-timeout、connect-timeout、followRedirects会被ribbon的覆盖 相关类LoadBalancerFeignClient

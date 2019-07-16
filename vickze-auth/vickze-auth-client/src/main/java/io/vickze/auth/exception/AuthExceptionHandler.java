@@ -31,7 +31,9 @@ public class AuthExceptionHandler {
     @ExceptionHandler(UnauthorizedException.class)
     public FeignExceptionErrorDecoder.ExceptionInfo handleUnauthorizedException(UnauthorizedException e) {
         FeignExceptionErrorDecoder.ExceptionInfo exceptionInfo = new FeignExceptionErrorDecoder.ExceptionInfo();
-        exceptionInfo.setExceptionClass(e.getClass().getName());
+        if (e.isSerializeExceptionClass()) {
+            exceptionInfo.setExceptionClass(e.getClass().getName());
+        }
         exceptionInfo.setMessage(e.getMessage());
         return exceptionInfo;
     }
@@ -40,7 +42,9 @@ public class AuthExceptionHandler {
     @ExceptionHandler(ForbiddenException.class)
     public FeignExceptionErrorDecoder.ExceptionInfo handleForbiddenException(ForbiddenException e) {
         FeignExceptionErrorDecoder.ExceptionInfo exceptionInfo = new FeignExceptionErrorDecoder.ExceptionInfo();
-        exceptionInfo.setExceptionClass(e.getClass().getName());
+        if (e.isSerializeExceptionClass()) {
+            exceptionInfo.setExceptionClass(e.getClass().getName());
+        }
         exceptionInfo.setMessage(e.getMessage());
         return exceptionInfo;
     }

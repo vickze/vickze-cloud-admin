@@ -1,9 +1,7 @@
 package io.vickze.auth.service;
 
 import io.vickze.auth.domain.DO.UserDO;
-import io.vickze.auth.domain.DTO.CheckPermissionDTO;
-import io.vickze.auth.domain.DTO.UserDTO;
-import io.vickze.auth.domain.DTO.UserQueryDTO;
+import io.vickze.auth.domain.DTO.*;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -28,11 +26,14 @@ public interface UserService {
 
     void delete(Long... ids);
 
-    UserDO getByUsername(String username);
+    TokenDTO createToken(CreateTokenDTO createTokenDTO);
 
-    UserDO validate(String username, String password);
+    UserDO getByUsername(String username);
 
     Set<String> getMenuPermissions(String systemKey, Long userId);
 
     Set<String> getMenuPermissions(Long systemId, Long userId);
+
+    void checkSystemAccess(String systemKey, Long userId);
+
 }

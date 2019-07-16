@@ -130,11 +130,11 @@ public class MenuResourceServiceImpl implements MenuResourceService {
     @Override
     public List<String> getPermissions(String systemKey, String uri, String method) {
         if (StringUtils.isBlank(systemKey)) {
-            throw new ForbiddenException();
+            throw new ForbiddenException(false);
         }
         SystemDO systemDO = systemService.selectByKey(systemKey);
         if (systemDO == null) {
-            throw new ForbiddenException();
+            throw new ForbiddenException(false);
         }
 
         return getPermissions(systemDO.getId(), uri, method);

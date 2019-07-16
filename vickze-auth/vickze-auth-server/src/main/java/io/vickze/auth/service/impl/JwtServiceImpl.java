@@ -62,27 +62,11 @@ public class JwtServiceImpl implements TokenService, InitializingBean {
     }
 
     @Override
-    public TokenDTO create(CreateTokenDTO createTokenDTO) {
-        if (StringUtils.isBlank(createTokenDTO.getSystemKey())) {
-            throw new ForbiddenException();
-        }
-        SystemDO systemDO = systemService.selectByKey(createTokenDTO.getSystemKey());
-        if (systemDO == null) {
-            throw new ForbiddenException();
-        }
-
-        UserDO userDO = userService.validate(createTokenDTO.getUsername(), createTokenDTO.getPassword());
-        Set<String> permissions = userService.getMenuPermissions(systemDO.getId(), userDO.getId());
-
-        //是否允许无菜单资源权限登录
-        if (Boolean.FALSE.equals(systemDO.getNotResourceLogin()) && CollectionUtils.isEmpty(permissions)) {
-            throw new MessageException(GlobalConstant.SYSTEM_NOT_RESOURCE_CODE);
-        }
-
+    public TokenDTO create(AuthUserDTO authUserDTO) {
         Date now = new Date();
         String jws = Jwts.builder()
-                .setSubject(String.valueOf(userDO.getId()))
-                .claim(USERNAME, userDO.getUsername())
+                .setSubject(String.valueOf(authUserDTO.getUserId()))
+                .claim(USERNAME, authUserDTO.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(DateUtils.addSeconds(now, (int) jwtProperties.getExpire()))
                 .signWith(privateKey, SignatureAlgorithm.RS256)
@@ -91,7 +75,6 @@ public class JwtServiceImpl implements TokenService, InitializingBean {
         TokenDTO tokenDTO = new TokenDTO();
         tokenDTO.setExpire(jwtProperties.getExpire());
         tokenDTO.setToken(jws);
-        tokenDTO.setPermissions(permissions);
         return tokenDTO;
     }
 

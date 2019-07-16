@@ -58,6 +58,12 @@ public class UserController implements UserClient {
         userService.delete(ids);
     }
 
+    @PostMapping("/token")
+    public TokenDTO create(@RequestHeader(GlobalConstant.SYSTEM_HEADER) String systemKey, @RequestBody CreateTokenDTO createTokenDTO) {
+        createTokenDTO.setSystemKey(systemKey);
+        return userService.createToken(createTokenDTO);
+    }
+
     @GetMapping("/_current") // _ 字符防止获取接口权限的时候被 /user/{id}匹配到，另外也可以配置忽略该接口权限
     public CurrentUserDTO current(@AuthUser AuthUserDTO authUserDTO,
                                   @RequestHeader(GlobalConstant.SYSTEM_HEADER) String systemKey) {
@@ -65,5 +71,10 @@ public class UserController implements UserClient {
         BeanUtils.copyProperties(authUserDTO, currentUserDTO);
         currentUserDTO.setPermissions(userService.getMenuPermissions(systemKey, currentUserDTO.getUserId()));
         return currentUserDTO;
+    }
+
+    @Override
+    public void checkSystemAccess(String systemKey, Long userId) {
+        userService.checkSystemAccess(systemKey, userId);
     }
 }

@@ -48,12 +48,14 @@
 #        uri: /api/generator/v2/api-docs
 #      - method: GET
 #        uri: /api/sso/v2/api-docs
+#      - method: GET
+#        uri: /api/sso/validateService
+#      - method: GET
+#        uri: /api/sso/validateToken
 #    #不需要登录但仍然需要System-Key
 #    ignore-uris-without-login:
 #      - method: POST
-#        uri: /api/auth/token
-#      - method: GET
-#        uri: /api/sso/validate
+#        uri: /api/auth/user/token
 #
 #management:
 #  endpoints:

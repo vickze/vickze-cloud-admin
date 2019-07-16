@@ -4,15 +4,19 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.vickze.auth.constant.GlobalConstant;
 import io.vickze.auth.domain.DO.MenuResourceDO;
+import io.vickze.auth.domain.DO.SystemDO;
 import io.vickze.auth.domain.DO.UserRoleDO;
-import io.vickze.auth.domain.DTO.UserDTO;
+import io.vickze.auth.domain.DTO.*;
 import io.vickze.auth.enums.UserStatus;
+import io.vickze.auth.exception.ForbiddenException;
+import io.vickze.auth.exception.UnauthorizedException;
 import io.vickze.auth.mapper.UserMapper;
 import io.vickze.auth.mapper.UserRoleMapper;
 import io.vickze.auth.service.RoleService;
+import io.vickze.auth.service.SystemService;
+import io.vickze.auth.service.TokenService;
 import io.vickze.common.domain.RPage;
 import io.vickze.auth.domain.DO.UserDO;
-import io.vickze.auth.domain.DTO.UserQueryDTO;
 import io.vickze.common.enums.DBOrder;
 import io.vickze.auth.service.UserService;
 
@@ -46,6 +50,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private SystemService systemService;
+    @Autowired
+    private TokenService tokenService;
 
     @Override
     public Pair<List<UserDTO>, Long> list(UserQueryDTO queryDTO) {
@@ -136,29 +144,49 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDO getByUsername(String username) {
-        QueryWrapper<UserDO> wrapper = new QueryWrapper<>();
-        wrapper.eq("username", username);
-        return userMapper.selectOne(wrapper);
-    }
+    public TokenDTO createToken(CreateTokenDTO createTokenDTO) {
+        if (org.apache.commons.lang3.StringUtils.isBlank(createTokenDTO.getSystemKey())) {
+            throw new ForbiddenException(false);
+        }
+        SystemDO systemDO = systemService.selectByKey(createTokenDTO.getSystemKey());
+        if (systemDO == null) {
+            throw new ForbiddenException(false);
+        }
 
-
-    @Override
-    public UserDO validate(String username, String password) {
-        UserDO userDO = getByUsername(username);
+        UserDO userDO = getByUsername(createTokenDTO.getUsername());
         if (userDO == null) {
             throw new MessageException(GlobalConstant.USER_NOT_EXIST_CODE);
         }
 
-        if (!BCrypt.checkpw(password, userDO.getPassword())) {
+        if (!BCrypt.checkpw(createTokenDTO.getPassword(), userDO.getPassword())) {
             throw new MessageException(GlobalConstant.USER_PASSWORD_ERROR_CODE);
         }
 
         if (UserStatus.DISABLED.getCode().equals(userDO.getStatus())) {
             throw new MessageException(GlobalConstant.USER_DISABLED_CODE);
         }
-        return userDO;
+
+        Set<String> permissions = getMenuPermissions(systemDO.getId(), userDO.getId());
+
+        //是否允许无菜单资源权限登录
+        if (Boolean.FALSE.equals(systemDO.getNotResourceLogin()) && CollectionUtils.isEmpty(permissions)) {
+            throw new MessageException(GlobalConstant.SYSTEM_NOT_RESOURCE_CODE);
+        }
+
+        AuthUserDTO authUserDTO = new AuthUserDTO();
+        authUserDTO.setUserId(userDO.getId());
+        authUserDTO.setUsername(userDO.getUsername());
+
+        return tokenService.create(authUserDTO);
     }
+
+    @Override
+    public UserDO getByUsername(String username) {
+        QueryWrapper<UserDO> wrapper = new QueryWrapper<>();
+        wrapper.eq("username", username);
+        return userMapper.selectOne(wrapper);
+    }
+
 
     @Override
     public Set<String> getMenuPermissions(String systemKey, Long userId) {
@@ -182,4 +210,16 @@ public class UserServiceImpl implements UserService {
                 .stream().map(MenuResourceDO::getPermission).collect(Collectors.toSet());
     }
 
+    @Override
+    public void checkSystemAccess(String systemKey, Long userId) {
+        SystemDO systemDO = systemService.selectByKey(systemKey);
+        if (systemDO == null) {
+            throw new ForbiddenException();
+        }
+        Set<String> userPermissions = getMenuPermissions(systemDO.getId(), userId);
+        //是否允许无菜单资源权限登录
+        if (Boolean.FALSE.equals(systemDO.getNotResourceLogin()) && CollectionUtils.isEmpty(userPermissions)) {
+            throw new UnauthorizedException();
+        }
+    }
 }

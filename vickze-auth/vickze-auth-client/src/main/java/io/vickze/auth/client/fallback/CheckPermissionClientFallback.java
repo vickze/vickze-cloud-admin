@@ -18,6 +18,6 @@ public class CheckPermissionClientFallback implements CheckPermissionClient {
     public void checkPermission(CheckPermissionDTO checkPermissionDTO) {
         log.error("CheckPermissionClientFallback checkPermission fallback.");
         //抛出异常使fallback失败
-        throw new ClientException("CheckPermissionClientFallback checkPermission fallback fail.");
+        throw new ClientException("CheckPermissionClient checkPermission fallback fail.");
     }
 }

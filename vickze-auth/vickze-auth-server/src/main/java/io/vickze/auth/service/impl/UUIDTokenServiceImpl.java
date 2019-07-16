@@ -49,27 +49,7 @@ public class UUIDTokenServiceImpl implements TokenService {
     private static final String USERNAME = "username";
 
     @Override
-    public TokenDTO create(CreateTokenDTO createTokenDTO) {
-        if (StringUtils.isBlank(createTokenDTO.getSystemKey())) {
-            throw new ForbiddenException();
-        }
-        SystemDO systemDO = systemService.selectByKey(createTokenDTO.getSystemKey());
-        if (systemDO == null) {
-            throw new ForbiddenException();
-        }
-
-        UserDO userDO = userService.validate(createTokenDTO.getUsername(), createTokenDTO.getPassword());
-        Set<String> permissions = userService.getMenuPermissions(systemDO.getId(), userDO.getId());
-
-        //是否允许无菜单资源权限登录
-        if (Boolean.FALSE.equals(systemDO.getNotResourceLogin()) && CollectionUtils.isEmpty(permissions)) {
-            throw new MessageException(GlobalConstant.SYSTEM_NOT_RESOURCE_CODE);
-        }
-
-        AuthUserDTO authUserDTO = new AuthUserDTO();
-        authUserDTO.setUserId(userDO.getId());
-        authUserDTO.setUsername(userDO.getUsername());
-
+    public TokenDTO create(AuthUserDTO authUserDTO) {
         String token = UUID.randomUUID().toString();
         String tokenKey = getTokenKey(token);
 
@@ -80,7 +60,6 @@ public class UUIDTokenServiceImpl implements TokenService {
         TokenDTO tokenDTO = new TokenDTO();
         tokenDTO.setExpire(uuidTokenProperties.getExpire());
         tokenDTO.setToken(token);
-        tokenDTO.setPermissions(permissions);
         return tokenDTO;
     }
 

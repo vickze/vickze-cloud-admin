@@ -109,7 +109,7 @@ public class RoleServiceImpl implements RoleService {
     public List<MenuResourceDO> getMenuResources(String systemKey, Long... roleIds) {
         SystemDO systemDO = systemService.selectByKey(systemKey);
         if (systemDO == null) {
-            throw new ForbiddenException();
+            throw new ForbiddenException(false);
         }
 
         return getMenuResources(systemDO.getId(), roleIds);
