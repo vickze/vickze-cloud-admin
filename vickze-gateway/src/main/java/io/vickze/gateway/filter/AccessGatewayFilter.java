@@ -46,9 +46,6 @@ public class AccessGatewayFilter implements GlobalFilter {
         Iterator<URI> iterator = requiredAttribute.iterator();
 
         String requestUri = iterator.next().getPath();
-        if (requestUri.endsWith("/")) {
-            requestUri = requestUri.substring(0, requestUri.lastIndexOf("/"));
-        }
         String method = request.getMethod().toString();
 
         String systemKey = null;
