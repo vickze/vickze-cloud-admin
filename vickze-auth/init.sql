@@ -95,8 +95,8 @@ CREATE TABLE IF NOT EXISTS `role_menu_resource` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='角色与菜单资源对应关系';
 
 
-INSERT INTO `system`(`id`, `name`, `key`, `intercept_interface`, `not_resource_login`, `create_time`, `update_time`) VALUES (1, '权限控制中心', 'vickze-auth', 0, 0, now(), now());
-INSERT INTO `system`(`id`, `name`, `key`, `intercept_interface`, `not_resource_login`, `create_time`, `update_time`) VALUES (2, '代码生成系统', 'vickze-generator', 0, 1, now(), now());
+INSERT INTO `system`(`id`, `name`, `key`, `not_resource_login`, `create_time`, `update_time`) VALUES (1, '权限控制中心', 'vickze-auth', 0, now(), now());
+INSERT INTO `system`(`id`, `name`, `key`, `not_resource_login`, `create_time`, `update_time`) VALUES (2, '代码生成系统', 'vickze-generator', 1, now(), now());
 
 
 INSERT INTO `menu`(`id`, `system_id`, `parent_id`, `name`, `create_time`, `update_time`) VALUES (1, 1, NULL, '系统', now(), now());
