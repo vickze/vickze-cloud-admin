@@ -11,8 +11,8 @@
 # (cd ../vickze-generator-ui/; yarn install; yarn cross-env SSO=http://192.168.244.137:82/ umi build)
 # (cd ../vickze-sso-ui/; yarn install; yarn build)
 #
-# docker-compose build
-# docker-compose up
+# docker-compose -f docker-compose-sso.yml build
+# docker-compose -f docker-compose-sso.yml up
 version: '2'
 networks:
   default:
