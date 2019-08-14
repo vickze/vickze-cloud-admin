@@ -8,7 +8,10 @@ import io.vickze.auth.domain.DTO.CheckPermissionDTO;
 import io.vickze.common.domain.DTO.MessageResultDTO;
 import io.vickze.auth.exception.ForbiddenException;
 import io.vickze.auth.exception.UnauthorizedException;
+import io.vickze.common.domain.Interface;
 import io.vickze.common.util.JsonUtil;
+import io.vickze.common.util.InterfaceUtil;
+import io.vickze.gateway.properties.AccessForbiddenProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +38,10 @@ import java.util.*;
 @Configuration
 @Slf4j
 public class AccessGatewayFilter implements GlobalFilter {
+
+    @Autowired
+    private AccessForbiddenProperties accessForbiddenProperties;
+
     @Autowired
     private CheckPermissionClient checkPermissionClient;
 
@@ -47,6 +54,13 @@ public class AccessGatewayFilter implements GlobalFilter {
 
         String requestUri = iterator.next().getPath();
         String method = request.getMethod().toString();
+
+        // 禁止网关转发该接口，内部通信接口，不允许前端访问
+        if (InterfaceUtil.interfaceContains(new Interface(method, requestUri),
+                accessForbiddenProperties.getForbiddenInterfaces())) {
+            exchange.getResponse().setStatusCode(HttpStatus.FORBIDDEN);
+            return handleException(new ForbiddenException(), exchange);
+        }
 
         String systemKey = null;
         List<String> systemHeader = request.getHeaders().get(GlobalConstant.SYSTEM_HEADER);

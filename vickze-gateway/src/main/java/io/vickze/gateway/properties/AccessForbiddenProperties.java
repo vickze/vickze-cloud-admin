@@ -1,4 +1,4 @@
-package io.vickze.auth.properties;
+package io.vickze.gateway.properties;
 
 import io.vickze.common.domain.Interface;
 import lombok.AllArgsConstructor;
@@ -9,24 +9,20 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author vick.zeng
  * @email zyk@yk95.top
- * @create 2019-05-24 21:38
+ * @create 2019-08-14 11:42
  */
 @Data
 @RefreshScope
-@ConfigurationProperties(value = "auth.check-permission", ignoreUnknownFields = false)
+@ConfigurationProperties(value = "access", ignoreUnknownFields = false)
 @Component
-public class AuthCheckPermissionProperties {
+public class AccessForbiddenProperties {
 
-    private List<Interface> ignoreInterfaces = new ArrayList<>();
-
-    private List<Interface> ignoreInterfacesWithoutLogin = new ArrayList<>();
+    private List<Interface> forbiddenInterfaces = new ArrayList<>();
 
 }
 

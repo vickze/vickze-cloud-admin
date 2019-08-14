@@ -125,3 +125,10 @@
 #        isolation:
 #          thread:
 #            timeoutInMilliseconds: 1000 #断路器超时时间，默认1000ms
+#
+#access:
+#  forbidden-interfaces:
+#    - method: POST
+#      uri: /api/auth/checkPermission
+#    - method: GET
+#      uri: /api/auth/token/validate

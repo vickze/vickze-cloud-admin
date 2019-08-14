@@ -7,6 +7,8 @@ import io.vickze.auth.properties.AuthCheckPermissionProperties;
 import io.vickze.auth.service.*;
 import io.vickze.auth.exception.ForbiddenException;
 import io.vickze.auth.exception.UnauthorizedException;
+import io.vickze.common.domain.Interface;
+import io.vickze.common.util.InterfaceUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,8 +38,10 @@ public class CheckPermissionServiceImpl implements CheckPermissionService {
 
     @Override
     public void checkPermission(CheckPermissionDTO checkPermissionDTO) {
-        if (authCheckPermissionProperties.getIgnoreUris().contains(
-                new AuthCheckPermissionProperties.Interface(checkPermissionDTO.getMethod(), checkPermissionDTO.getRequestUri()))) {
+        // 请求接口
+        Interface requestInterface = new Interface(checkPermissionDTO.getMethod(), checkPermissionDTO.getRequestUri());
+
+        if (InterfaceUtil.interfaceContains(requestInterface, authCheckPermissionProperties.getIgnoreInterfaces())) {
             return;
         }
         if (StringUtils.isBlank(checkPermissionDTO.getSystemKey())) {
@@ -48,8 +52,7 @@ public class CheckPermissionServiceImpl implements CheckPermissionService {
             throw new ForbiddenException();
         }
 
-        if (authCheckPermissionProperties.getIgnoreUrisWithoutLogin().contains(
-                new AuthCheckPermissionProperties.Interface(checkPermissionDTO.getMethod(), checkPermissionDTO.getRequestUri()))) {
+        if (InterfaceUtil.interfaceContains(requestInterface, authCheckPermissionProperties.getIgnoreInterfacesWithoutLogin())) {
             return;
         }
 

@@ -8,13 +8,13 @@ import io.vickze.auth.domain.DTO.MenuResourceDTO;
 import io.vickze.auth.mapper.MenuResourceInterfaceMapper;
 import io.vickze.auth.mapper.MenuResourceMapper;
 import io.vickze.auth.service.SystemService;
-import io.vickze.auth.util.MatchUtil;
 import io.vickze.common.domain.RPage;
 import io.vickze.auth.domain.DO.MenuResourceDO;
 import io.vickze.auth.domain.DTO.MenuResourceQueryDTO;
 import io.vickze.common.enums.DBOrder;
 import io.vickze.auth.service.MenuResourceService;
 import io.vickze.auth.exception.ForbiddenException;
+import io.vickze.common.util.InterfaceUtil;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.BeanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -25,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -153,7 +152,7 @@ public class MenuResourceServiceImpl implements MenuResourceService {
         for (MenuResourceInterfaceDO menuResourceInterfaceDO : menuResourceInterfaceDOS) {
             String interfaceUri = menuResourceInterfaceDO.getInterfaceUri();
 
-            if (MatchUtil.uriMatch(uri, interfaceUri)) {
+            if (InterfaceUtil.uriMatch(uri, interfaceUri)) {
                 MenuResourceDO menuResourceDO = menuResourceMapper.selectById(menuResourceInterfaceDO.getMenuResourceId());
                 if (menuResourceDO != null) {
                     list.add(menuResourceDO.getPermission());

@@ -41,7 +41,7 @@
 #
 #auth:
 #  check-permission:
-#    ignore-uris:
+#    ignore-interfaces:
 #      - method: GET
 #        uri: /api/auth/v2/api-docs
 #      - method: GET
@@ -53,7 +53,7 @@
 #      - method: GET
 #        uri: /api/sso/validateToken
 #    #不需要登录但仍然需要System-Key
-#    ignore-uris-without-login:
+#    ignore-interfaces-without-login:
 #      - method: POST
 #        uri: /api/auth/user/token
 #
