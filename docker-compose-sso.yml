@@ -36,7 +36,7 @@ services:
   vickze-auth:
     image: io.vickze/vickze-auth
     build: ./vickze-auth/vickze-auth-server/
-    container_name: vickze-auth #domain name含有[_]字符时访问tomcat会报400，使用docker-compose自动生成的容器名含有[_]会有问题
+    container_name: vickze-auth #domain name含有[_]字符时访问tomcat会报400，使用docker-compose自动生成的容器名含有[_]，使用容器名访问服务接口会有问题
     volumes:
       - /usr/local/log:/log
       - /etc/localtime:/etc/localtime
