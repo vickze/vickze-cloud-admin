@@ -7,9 +7,11 @@ import io.vickze.auth.resovler.AuthUser;
 import io.vickze.auth.service.UserService;
 import io.vickze.common.validation.Insert;
 import io.vickze.common.validation.Update;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +25,7 @@ import java.util.List;
  * @email zyk@yk95.top
  * @create 2019-04-16 11:18:06
  */
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController implements UserClient {
@@ -30,6 +33,13 @@ public class UserController implements UserClient {
     @Autowired
     private UserService userService;
 
+    @Value("${server.port}")
+    private String serverPort;
+
+    @GetMapping("/test")
+    public void test() {
+        log.debug(serverPort);
+    }
 
     @GetMapping
     public List<UserDTO> list(UserQueryDTO queryDTO, HttpServletResponse response) {

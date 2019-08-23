@@ -5,6 +5,24 @@
 #    vickze-generator:
 #      - http://localhost:8002/
 #
+#logging:
+#  file: ./log/vickze-sso.log
+#  level:
+#    io.vickze: DEBUG
+#    com.alibaba.nacos.client.naming: ERROR
+#
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: '*'
+#  endpoint:
+#    health:
+#      show-details: ALWAYS
+#  metrics:
+#    tags:
+#      application: ${spring.application.name}
+#
 #feign:
 #  hystrix:
 #    enabled: true

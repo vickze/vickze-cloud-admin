@@ -24,34 +24,45 @@ services:
     image: io.vickze/vickze-gateway
     build: ./vickze-gateway/
     container_name: vickze-gateway
+    volumes:
+      - /usr/local/log:/log #挂载日志目录，注意存在Docker容器没有执行权限问题，参考https://www.linuxidc.com/Linux/2015-03/115124.htm解决
+      - /etc/localtime:/etc/localtime #解决Docker容器时间与宿主机不一致问题
     ports:
       - "16000:16000"
     environment:
       - NACOS_ADDR=nacos-standalone:8848
-      - JAVA_OPTS=-Xmx128m
+      - JAVA_OPTS=-Xmx128m -Duser.timezone=GMT+8 #-Duser.timezone=GMT+8解决打印日志小8小时问题
       - COMMAND_ARGS=--REDIS_HOST=redis
   vickze-auth:
     image: io.vickze/vickze-auth
     build: ./vickze-auth/vickze-auth-server/
+    volumes:
+      - /usr/local/log:/log
+      - /etc/localtime:/etc/localtime
     environment:
       - NACOS_ADDR=nacos-standalone:8848
-      - JAVA_OPTS=-Xmx128m -DMYSQL_HOST=mysql
+      - JAVA_OPTS=-Xmx128m -DMYSQL_HOST=mysql -Duser.timezone=GMT+8
       - COMMAND_ARGS=--REDIS_HOST=redis
   vickze-generator:
     image: io.vickze/vickze-generator
     build: ./vickze-generator/
+    volumes:
+      - /usr/local/log:/log
+      - /etc/localtime:/etc/localtime
     environment:
       - NACOS_ADDR=nacos-standalone:8848
-      - JAVA_OPTS=-Xmx128m -DMASTER_MYSQL_HOST=mysql
+      - JAVA_OPTS=-Xmx128m -DMASTER_MYSQL_HOST=mysql -Duser.timezone=GMT+8
       - COMMAND_ARGS=--GENERATOR_MYSQL_HOST=mysql
   vickze-sso:
     image: io.vickze/vickze-sso
     build: ./vickze-sso/
     environment:
       - NACOS_ADDR=nacos-standalone:8848
-      - JAVA_OPTS=-Xmx128m
+      - JAVA_OPTS=-Xmx128m -Duser.timezone=GMT+8
   vickze-auth-ui:
     image: io.vickze/vickze-auth-ui
+    volumes:
+      - /etc/localtime:/etc/localtime
     build:
       context: ../vickze-auth-ui
       dockerfile: Dockerfile.hub
@@ -60,6 +71,8 @@ services:
       - "80:80"
   vickze-generator-ui:
     image: io.vickze/vickze-generator-ui
+    volumes:
+      - /etc/localtime:/etc/localtime
     build:
       context: ../vickze-generator-ui
       dockerfile: Dockerfile.hub
@@ -68,6 +81,8 @@ services:
       - "81:80"
   vickze-sso-ui:
     image: io.vickze/vickze-sso-ui
+    volumes:
+      - /etc/localtime:/etc/localtime
     build:
       context: ../vickze-sso-ui
       dockerfile: Dockerfile.hub

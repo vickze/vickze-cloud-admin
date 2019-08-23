@@ -77,6 +77,7 @@
 #
 #
 #logging:
+#  file: ./log/vickze-gateway.log
 #  level:
 #    io.vickze: DEBUG
 #    com.alibaba.nacos.client.naming: ERROR
@@ -93,6 +94,9 @@
 #  endpoint:
 #    health:
 #      show-details: ALWAYS
+#  metrics:
+#    tags:
+#      application: ${spring.application.name}
 #
 #
 #feign:

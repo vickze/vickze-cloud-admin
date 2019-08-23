@@ -40,6 +40,7 @@
 #      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
 #
 #logging:
+#  file: ./log/vickze-generator.log
 #  level:
 #    io.vickze: DEBUG
 #    com.alibaba.nacos.client.naming: ERROR
@@ -52,6 +53,9 @@
 #  endpoint:
 #    health:
 #      show-details: ALWAYS
+#  metrics:
+#    tags:
+#      application: ${spring.application.name}
 #
 #
 #feign:

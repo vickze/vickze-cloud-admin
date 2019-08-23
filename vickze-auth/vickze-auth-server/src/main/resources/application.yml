@@ -65,6 +65,9 @@
 #  endpoint:
 #    health:
 #      show-details: ALWAYS
+#  metrics:
+#    tags:
+#      application: ${spring.application.name}
 #
 #
 #feign:
