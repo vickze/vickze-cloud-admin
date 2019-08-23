@@ -36,6 +36,7 @@ services:
   vickze-auth:
     image: io.vickze/vickze-auth
     build: ./vickze-auth/vickze-auth-server/
+    container_name: vickze-auth #domain name含有[_]字符时访问tomcat会报400，使用docker-compose自动生成的容器名含有[_]会有问题
     volumes:
       - /usr/local/log:/log
       - /etc/localtime:/etc/localtime
@@ -46,6 +47,7 @@ services:
   vickze-generator:
     image: io.vickze/vickze-generator
     build: ./vickze-generator/
+    container_name: vickze-generator
     volumes:
       - /usr/local/log:/log
       - /etc/localtime:/etc/localtime
@@ -56,6 +58,7 @@ services:
   vickze-sso:
     image: io.vickze/vickze-sso
     build: ./vickze-sso/
+    container_name: vickze-sso
     environment:
       - NACOS_ADDR=nacos-standalone:8848
       - JAVA_OPTS=-Xmx128m -Duser.timezone=GMT+8
