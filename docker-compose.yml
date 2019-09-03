@@ -18,6 +18,57 @@ networks:
       name: vickze-cloud-admin
 
 services:
+  nacos:
+    image: nacos/nacos-server:latest
+    container_name: nacos-standalone
+    environment:
+      - PREFER_HOST_MODE=hostname
+      - MODE=standalone
+    volumes:
+      - nacos-data:/home/nacos
+      - ./standalone-logs/:/usr/local/nacos-docker/logs
+      - ./dependency/nacos/custom.properties:/home/nacos/init.d/custom.properties
+      - /etc/localtime:/etc/localtime
+    ports:
+      - "8848:8848"
+  # prometheus、grafana 内存不足可以选择关闭
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:latest
+    volumes:
+      - prometheus-data:/prometheus
+      - ./dependency/prometheus/prometheus-standalone.yaml:/etc/prometheus/prometheus.yml
+      - /etc/localtime:/etc/localtime
+    ports:
+      - "9090:9090"
+    depends_on:
+      - nacos
+    restart: on-failure
+  grafana:
+    container_name: grafana
+    image: grafana/grafana:latest
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - /etc/localtime:/etc/localtime
+    ports:
+      - 3000:3000
+    restart: on-failure
+  mysql:
+    image: mysql # mysql8可能需要修改密码认证机制 docker exec -it mysql bash; mysql -u root -p; ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY '123456';
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+  redis:
+    image: redis
+    container_name: redis
+    volumes:
+      - redis-data:/data
+    ports:
+      - "6379:6379"
   vickze-gateway:
     image: io.vickze/vickze-gateway
     build: ./vickze-gateway/
@@ -73,3 +124,10 @@ services:
     container_name: vickze-generator-ui
     ports:
       - "81:80"
+
+volumes:
+  nacos-data: {}
+  prometheus-data: {}
+  grafana-data: {}
+  mysql-data: {}
+  redis-data: {}
