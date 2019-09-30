@@ -65,6 +65,7 @@ services:
 #      - MYSQL_ROOT_PASSWORD=123456
 #    volumes:
 #      - mysql-data:/var/lib/mysql
+#      - /etc/localtime:/etc/localtime
 #    ports:
 #      - "3306:3306"
 #  redis:
@@ -72,6 +73,7 @@ services:
 #    container_name: redis
 #    volumes:
 #      - redis-data:/data
+#      - /etc/localtime:/etc/localtime
 #    ports:
 #      - "6379:6379"
 
@@ -236,10 +238,10 @@ services:
 
 
 volumes:
-  nacos-data: {}
-  nacos-log: {}
-  prometheus-data: {}
-  grafana-data: {}
-  mysql-data: {}
-  redis-data: {}
+#  nacos-data: {}
+#  nacos-log: {}
+#  prometheus-data: {}
+#  grafana-data: {}
+#  mysql-data: {}
+#  redis-data: {}
   application-log: {}
