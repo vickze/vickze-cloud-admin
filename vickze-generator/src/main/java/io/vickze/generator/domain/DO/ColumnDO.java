@@ -11,6 +11,8 @@ public class ColumnDO {
 
     private String dataType;
 
+    private String characterMaximumLength;
+
     private String columnComment;
 
     private String columnKey;

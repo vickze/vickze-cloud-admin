@@ -4,7 +4,14 @@
 # ../../mvnw install -DskipTests
 # mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 # docker build -t io.vickze/vickze-auth .
-# docker run -it --rm -e NACOS_ADDR=nacos-standalone:8848 -e JAVA_OPTS="-Xmx128m -DMYSQL_HOST=mysql" -e COMMAND_ARGS="--REDIS_HOST=redis" --net vickze-cloud-admin io.vickze/vickze-auth
+# docker run -it --rm \
+# -v vickze-cloud-admin_application-log:/log -v /etc/localtime:/etc/localtime \
+# -e NACOS_ADDR=nacos-standalone:8848 -e JAVA_OPTS="-Xmx128m -DMYSQL_HOST=mysql -Duser.timezone=GMT+8" -e COMMAND_ARGS="--REDIS_HOST=redis" \
+# --label type=springboot --label name=vickze-auth \
+# --log-driver json-file --log-opt labels=type,name --log-opt max-size=10m --log-opt max-file=10 \
+# --net vickze-cloud-admin \
+# io.vickze/vickze-auth
+
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
 ARG DEPENDENCY=target/dependency

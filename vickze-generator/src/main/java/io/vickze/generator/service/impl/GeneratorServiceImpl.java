@@ -157,6 +157,7 @@ public class GeneratorServiceImpl implements GeneratorService {
                     tableDTO.setPk(column);
                 }
 
+                column.setCharacterMaximumLength(columnDO.getCharacterMaximumLength());
                 columns.add(column);
             }
             tableDTO.setColumns(columns);

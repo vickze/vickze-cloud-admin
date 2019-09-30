@@ -33,14 +33,6 @@ public class UserController implements UserClient {
     @Autowired
     private UserService userService;
 
-    @Value("${server.port}")
-    private String serverPort;
-
-    @GetMapping("/test")
-    public void test() {
-        log.debug(serverPort);
-    }
-
     @GetMapping
     public List<UserDTO> list(UserQueryDTO queryDTO, HttpServletResponse response) {
         Pair<List<UserDTO>, Long> result = userService.list(queryDTO);

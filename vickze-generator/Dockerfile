@@ -2,7 +2,16 @@
 # ../mvnw install -DskipTests
 # mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 # docker build -t io.vickze/vickze-generator .
-# docker run -it --rm -e NACOS_ADDR=nacos-standalone:8848 -e JAVA_OPTS="-Xmx128m -DMASTER_MYSQL_HOST=mysql" -e COMMAND_ARGS="--GENERATOR_MYSQL_HOST=mysql" --net vickze-cloud-admin io.vickze/vickze-generator
+# docker run -it -v /usr/local/log:/log -v /etc/localtime:/etc/localtime --rm -e NACOS_ADDR=nacos-standalone:8848 -e JAVA_OPTS="-Xmx128m -DMASTER_MYSQL_HOST=mysql" -e COMMAND_ARGS="--GENERATOR_MYSQL_HOST=mysql" --net vickze-cloud-admin io.vickze/vickze-generator
+
+# docker run -it --rm \
+# -v vickze-cloud-admin_application-log:/log -v /etc/localtime:/etc/localtime \
+# -e NACOS_ADDR=nacos-standalone:8848 -e JAVA_OPTS="-Xmx128m -Duser.timezone=GMT+8 -DMASTER_MYSQL_HOST=mysql" -e COMMAND_ARGS="--GENERATOR_MYSQL_HOST=mysql" \
+# --label type=springboot --label name=vickze-generator \
+# --log-driver json-file --log-opt labels=type,name --log-opt max-size=10m --log-opt max-file=10 \
+# --net vickze-cloud-admin \
+# io.vickze/vickze-generator
+
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
 ARG DEPENDENCY=target/dependency

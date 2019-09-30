@@ -8,6 +8,8 @@ public class ColumnDTO {
     private String name;
     //列名类型
     private String dataType;
+    //
+    private String characterMaximumLength;
     //列名备注
     private String comment;
 

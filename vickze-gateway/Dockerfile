@@ -1,7 +1,14 @@
 # ../mvnw install -DskipTests
 # mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
 # docker build -t io.vickze/vickze-gateway .
-# docker run -it --rm -e NACOS_ADDR=nacos-standalone:8848 -e JAVA_OPTS="-Xmx128m" -e COMMAND_ARGS="--REDIS_HOST=redis" --net vickze-cloud-admin io.vickze/vickze-gateway
+# docker run -it --rm \
+# -p 16000:16000
+# -v vickze-cloud-admin_application-log:/log -v /etc/localtime:/etc/localtime \
+# -e NACOS_ADDR=nacos-standalone:8848 -e JAVA_OPTS="-Xmx128m -Duser.timezone=GMT+8" -e COMMAND_ARGS="--REDIS_HOST=redis" \
+# --label type=springboot --label name=vickze-gateway \
+# --log-driver json-file --log-opt labels=type,name --log-opt max-size=10m --log-opt max-file=10 \
+# --net vickze-cloud-admin \
+# io.vickze/vickze-gateway
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
 ARG DEPENDENCY=target/dependency

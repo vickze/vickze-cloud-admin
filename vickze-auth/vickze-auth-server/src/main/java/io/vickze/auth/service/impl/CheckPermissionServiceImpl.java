@@ -12,6 +12,7 @@ import io.vickze.common.util.InterfaceUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class CheckPermissionServiceImpl implements CheckPermissionService {
     private AuthCheckPermissionProperties authCheckPermissionProperties;
 
     @Override
+    @Transactional(readOnly = true)
     public void checkPermission(CheckPermissionDTO checkPermissionDTO) {
         // 请求接口
         Interface requestInterface = new Interface(checkPermissionDTO.getMethod(), checkPermissionDTO.getRequestUri());
