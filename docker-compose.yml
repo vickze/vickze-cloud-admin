@@ -11,7 +11,7 @@
 #
 # docker-compose build
 # docker-compose up
-version: '2'
+version: '3'
 networks:
   default:
     external:
@@ -26,7 +26,6 @@ services:
 #      - MODE=standalone
 #    volumes:
 #      - nacos-data:/home/nacos
-#      - nacos-log:/usr/local/nacos-docker/logs
 #      - ./example/nacos/custom.properties:/home/nacos/init.d/custom.properties
 #      - /etc/localtime:/etc/localtime
 #    ports:
@@ -155,7 +154,7 @@ services:
       dockerfile: Dockerfile.hub
     container_name: vickze-auth-ui
     ports:
-      - "80:80"
+      - "90:80"
     # 设置labels
     labels:
       type: nginx
@@ -167,6 +166,8 @@ services:
         labels: "type,name"
         max-size: "10m"
         max-file: "10"
+    depends_on:
+      - vickze-gateway
 
   vickze-generator-ui:
     image: io.vickze/vickze-generator-ui
@@ -177,7 +178,7 @@ services:
       dockerfile: Dockerfile.hub
     container_name: vickze-generator-ui
     ports:
-      - "81:80"
+      - "91:80"
     # 设置labels
     labels:
       type: nginx
@@ -189,10 +190,11 @@ services:
         labels: "type,name"
         max-size: "10m"
         max-file: "10"
+    depends_on:
+      - vickze-gateway
 
 volumes:
 #  nacos-data: {}
-#  nacos-log: {}
 #  prometheus-data: {}
 #  grafana-data: {}
 #  mysql-data: {}

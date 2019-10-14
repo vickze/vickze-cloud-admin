@@ -3,7 +3,7 @@
 # docker build -t io.vickze/vickze-gateway .
 # docker run -it --rm \
 # -p 16000:16000
-# -v vickze-cloud-admin_application-log:/log -v /etc/localtime:/etc/localtime \
+# -v application-log:/log -v /etc/localtime:/etc/localtime \
 # -e NACOS_ADDR=nacos-standalone:8848 -e JAVA_OPTS="-Xmx128m -Duser.timezone=GMT+8" -e COMMAND_ARGS="--REDIS_HOST=redis" \
 # --label type=springboot --label name=vickze-gateway \
 # --log-driver json-file --log-opt labels=type,name --log-opt max-size=10m --log-opt max-file=10 \

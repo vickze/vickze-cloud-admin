@@ -5,7 +5,7 @@
 # docker run -it --rm -v /usr/local/log:/log -v /etc/localtime:/etc/localtime -e NACOS_ADDR=nacos-standalone:8848 -e JAVA_OPTS="-Xmx128m -DMASTER_MYSQL_HOST=mysql" -e COMMAND_ARGS="--GENERATOR_MYSQL_HOST=mysql" --net vickze-cloud-admin io.vickze/vickze-sso
 
 # docker run -it --rm \
-# -v vickze-cloud-admin_application-log:/log -v /etc/localtime:/etc/localtime \
+# -v application-log:/log -v /etc/localtime:/etc/localtime \
 # -e NACOS_ADDR=nacos-standalone:8848 -e JAVA_OPTS="-Xmx128m -Duser.timezone=GMT+8" \
 # --label type=springboot --label name=vickze-sso \
 # --log-driver json-file --log-opt labels=type,name --log-opt max-size=10m --log-opt max-file=10 \
