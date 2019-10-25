@@ -13,7 +13,7 @@ import io.vickze.common.util.JsonUtil;
 import io.vickze.common.util.InterfaceUtil;
 import io.vickze.gateway.properties.AccessForbiddenProperties;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.util.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -64,28 +64,28 @@ public class AccessGatewayFilter implements GlobalFilter {
 
         String systemKey = null;
         List<String> systemHeader = request.getHeaders().get(GlobalConstant.SYSTEM_HEADER);
-        if (CollectionUtils.isNotEmpty(systemHeader)) {
+        if (!CollectionUtils.isEmpty(systemHeader)) {
             systemKey = systemHeader.get(0);
         }
         //header里面为空
         if (StringUtils.isBlank(systemKey)) {
             //从url参数获取
             List<String> systemParam = request.getQueryParams().get(GlobalConstant.SYSTEM_HEADER);
-            if (CollectionUtils.isNotEmpty(systemParam)) {
+            if (!CollectionUtils.isEmpty(systemParam)) {
                 systemKey = systemParam.get(0);
             }
         }
 
         String token = null;
         List<String> tokenHeader = request.getHeaders().get(TokenConstant.TOKEN_HEADER);
-        if (CollectionUtils.isNotEmpty(tokenHeader)) {
+        if (!CollectionUtils.isEmpty(tokenHeader)) {
             token = tokenHeader.get(0);
         }
         //header里面为空
         if (StringUtils.isBlank(token)) {
             //从url参数获取
             List<String> tokenParam = request.getQueryParams().get(TokenConstant.TOKEN_HEADER);
-            if (CollectionUtils.isNotEmpty(tokenParam)) {
+            if (!CollectionUtils.isEmpty(tokenParam)) {
                 token = tokenParam.get(0);
             }
         }
