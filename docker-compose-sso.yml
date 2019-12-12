@@ -192,7 +192,7 @@ services:
         max-file: "10"
     depends_on:
       - vickze-gateway
-      -
+
   vickze-generator-ui:
     image: io.vickze/vickze-generator-ui
     volumes:
@@ -216,7 +216,7 @@ services:
         max-file: "10"
     depends_on:
       - vickze-gateway
-      -
+
   vickze-sso-ui:
     image: io.vickze/vickze-sso-ui
     volumes:
