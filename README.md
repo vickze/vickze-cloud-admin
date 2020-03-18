@@ -14,9 +14,14 @@
 
 * 初始化 vickze-auth/init.sql、vickze-generator/init.sql
 * 启动mysql、redis、alibaba nacos
-* 服务配置导入到alibaba nacos
+* 各个服务注释的配置导入到alibaba nacos
 * 启动AuthApplication、GeneratorApplication、GatewayApplication
 * 启动前端工程 [https://github.com/vickze/vickze-auth-ui](https://github.com/vickze/vickze-auth-ui) [https://github.com/vickze/vickze-generator-ui](https://github.com/vickze/vickze-generator-ui) 账号密码 admin/admin
+
+### 单点启动
+* 启动前端工程[https://github.com/vickze/vickze-sso-ui](https://github.com/vickze/vickze-sso-ui)
+* vickze-auth-ui、vickze-generator-ui根据单点启动命令启动
+* 启动SSOApplication并修改配置sso.system为前端地址
 
 ### 功能截图
 
