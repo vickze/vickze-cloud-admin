@@ -31,7 +31,7 @@
         <mybatis-plus.verion>3.0.7.1</mybatis-plus.verion>
         <mybatis-plus.dynamic-datasource.version>2.5.0</mybatis-plus.dynamic-datasource.version>
         <mysql.version>8.0.15</mysql.version>
-        <commons.io.version>2.5</commons.io.version>
+        <commons.io.version>2.7</commons.io.version>
         <commons.configuration.version>1.10</commons.configuration.version>
         <common.lang.version>2.6</common.lang.version>
         <snakeyaml.version>1.23</snakeyaml.version>
