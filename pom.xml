@@ -34,7 +34,7 @@
         <commons.io.version>2.5</commons.io.version>
         <commons.configuration.version>1.10</commons.configuration.version>
         <common.lang.version>2.6</common.lang.version>
-        <snakeyaml.version>1.23</snakeyaml.version>
+        <snakeyaml.version>1.31</snakeyaml.version>
         <poi.version>4.0.1</poi.version>
         <commons.csv.version>1.6</commons.csv.version>
         <vickze-common.version>1.0-SNAPSHOT</vickze-common.version>
